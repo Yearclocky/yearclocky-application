@@ -1,0 +1,41 @@
+{
+  "/YearclockyApplicationStack": [
+    {
+      "type": "aws:cdk:stack-tags",
+      "data": [
+        {
+          "key": "Application",
+          "value": "yearclocky"
+        },
+        {
+          "key": "ManagedBy",
+          "value": "aws-cdk"
+        }
+      ]
+    }
+  ],
+  "/YearclockyApplicationStack/ApplicationName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApplicationName"
+    }
+  ],
+  "/YearclockyApplicationStack/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    }
+  ],
+  "/YearclockyApplicationStack/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    }
+  ],
+  "/YearclockyApplicationStack/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    }
+  ]
+}

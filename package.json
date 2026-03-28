@@ -1,0 +1,21 @@
+{
+  "name": "yearclocky-workspace",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Workspace root for the Yearclocky application.",
+  "workspaces": [
+    "packages/*",
+    "cdk"
+  ],
+  "scripts": {
+    "build": "npm run build --workspace yearclocky-application",
+    "cdk": "npm run cdk --workspace yearclocky-cdk",
+    "cdk:synth": "npm run synth --workspace yearclocky-cdk",
+    "clean": "npm run clean --workspace yearclocky-application",
+    "dev": "npm run dev --workspace yearclocky-application",
+    "start": "npm run start --workspace yearclocky-application"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
