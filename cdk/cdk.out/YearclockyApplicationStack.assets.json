@@ -1,0 +1,21 @@
+{
+  "version": "53.0.0",
+  "files": {
+    "b73263735eefe095fe1c876183178e28117279b93432139b921e9f06d151c019": {
+      "displayName": "YearclockyApplicationStack Template",
+      "source": {
+        "path": "YearclockyApplicationStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-us-east-1-8dcd48d6": {
+          "bucketName": "cdk-hnb659fds-assets-${AWS::AccountId}-us-east-1",
+          "objectKey": "b73263735eefe095fe1c876183178e28117279b93432139b921e9f06d151c019.json",
+          "region": "us-east-1",
+          "assumeRoleArn": "arn:${AWS::Partition}:iam::${AWS::AccountId}:role/cdk-hnb659fds-file-publishing-role-${AWS::AccountId}-us-east-1"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
