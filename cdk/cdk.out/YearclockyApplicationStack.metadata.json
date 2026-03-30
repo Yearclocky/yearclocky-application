@@ -1,25 +1,4 @@
 {
-  "/YearclockyApplicationStack": [
-    {
-      "type": "aws:cdk:stack-tags",
-      "data": [
-        {
-          "key": "Application",
-          "value": "yearclocky"
-        },
-        {
-          "key": "ManagedBy",
-          "value": "aws-cdk"
-        }
-      ]
-    }
-  ],
-  "/YearclockyApplicationStack/ApplicationName": [
-    {
-      "type": "aws:cdk:logicalId",
-      "data": "ApplicationName"
-    }
-  ],
   "/YearclockyApplicationStack/BootstrapVersion": [
     {
       "type": "aws:cdk:logicalId",
@@ -32,10 +11,124 @@
       "data": "CheckBootstrapVersion"
     }
   ],
+  "/YearclockyApplicationStack/SharedHttpApi/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApi30B2265F"
+    }
+  ],
+  "/YearclockyApplicationStack/YearclockyTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "YearclockyTable7F62CB98"
+    }
+  ],
   "/YearclockyApplicationStack/CDKMetadata/Default": [
     {
       "type": "aws:cdk:logicalId",
       "data": "CDKMetadata"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/DefaultStage/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiDefaultStage37564F1D"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--tasks/ApiHandlerIntegration-Permission": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYtasksApiHandlerIntegrationPermissionC1C8F46C"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--tasks/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYtasks7AE888FF"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--tasks--{proxy+}/ApiHandlerIntegration-Permission": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYtasksproxyApiHandlerIntegrationPermissionF2F9EB98"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--tasks--{proxy+}/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYtasksproxy4FB79EC7"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--yearclocks/ApiHandlerIntegration-Permission": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYyearclocksApiHandlerIntegrationPermissionA7D36E32"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--yearclocks/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYyearclocksB6DD5EBC"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--yearclocks--{proxy+}/ApiHandlerIntegration-Permission": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYyearclocksproxyApiHandlerIntegrationPermissionF46721C6"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--yearclocks--{proxy+}/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYyearclocksproxy36BA20C7"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--users/ApiHandlerIntegration-Permission": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYusersApiHandlerIntegrationPermission612BCBB8"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--users/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYusers530772A4"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--users--{proxy+}/ApiHandlerIntegration-Permission": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYusersproxyApiHandlerIntegrationPermission009C1B6A"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--users--{proxy+}/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYusersproxyEEA5633E"
+    }
+  ],
+  "/YearclockyApplicationStack/YearclockyApplication/ApiHandler/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "YearclockyApplicationApiHandler023CBB80"
+    }
+  ],
+  "/YearclockyApplicationStack/SharedHttpApi/ANY--tasks/ApiHandlerIntegration/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SharedHttpApiANYtasksApiHandlerIntegrationF4F9B4C6"
+    }
+  ],
+  "/YearclockyApplicationStack/YearclockyApplication/ApiHandler/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "YearclockyApplicationApiHandlerServiceRole28A57883"
+    }
+  ],
+  "/YearclockyApplicationStack/YearclockyApplication/ApiHandler/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "YearclockyApplicationApiHandlerServiceRoleDefaultPolicyE8BA1710"
     }
   ]
 }

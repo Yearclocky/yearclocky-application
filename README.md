@@ -1,9 +1,21 @@
 ## Application
 
-Basic Node.js application scaffolded with TypeScript.
+The application is exposed through a single AWS Lambda function named `api-handler`.
+Routing, validation, and business logic all live inside that Lambda for these HTTP
+resource trees:
+
+- `/tasks`
+- `/yearclocks`
+- `/users`
+
+The CDK package exports a reusable `YearclockyApplication` construct that creates:
+
+- the shared Lambda
+- an HTTP API
+- API routes that forward the three resource trees to the same handler
 
 ### Scripts
 
-- `npm run dev` runs the app directly from TypeScript sources.
-- `npm run build` compiles the app to `dist/`.
-- `npm start` runs the compiled output.
+- `npm run build` compiles the application package.
+- `npm run build --workspace yearclocky-cdk` compiles the CDK package.
+- `npm run cdk:synth` synthesizes the infrastructure template.

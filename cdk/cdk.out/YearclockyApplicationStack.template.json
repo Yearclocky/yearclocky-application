@@ -1,15 +1,595 @@
 {
- "Outputs": {
-  "ApplicationName": {
-   "Description": "Logical application name for the Yearclocky workload.",
-   "Value": "yearclocky-application"
-  }
- },
  "Resources": {
+  "SharedHttpApi30B2265F": {
+   "Type": "AWS::ApiGatewayV2::Api",
+   "Properties": {
+    "Name": "yearclocky-api",
+    "ProtocolType": "HTTP"
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/Resource"
+   }
+  },
+  "SharedHttpApiDefaultStage37564F1D": {
+   "Type": "AWS::ApiGatewayV2::Stage",
+   "Properties": {
+    "ApiId": {
+     "Ref": "SharedHttpApi30B2265F"
+    },
+    "AutoDeploy": true,
+    "StageName": "$default"
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/DefaultStage/Resource"
+   }
+  },
+  "SharedHttpApiANYtasksApiHandlerIntegrationF4F9B4C6": {
+   "Type": "AWS::ApiGatewayV2::Integration",
+   "Properties": {
+    "ApiId": {
+     "Ref": "SharedHttpApi30B2265F"
+    },
+    "IntegrationType": "AWS_PROXY",
+    "IntegrationUri": {
+     "Fn::GetAtt": [
+      "YearclockyApplicationApiHandler023CBB80",
+      "Arn"
+     ]
+    },
+    "PayloadFormatVersion": "2.0"
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--tasks/ApiHandlerIntegration/Resource"
+   }
+  },
+  "SharedHttpApiANYtasksApiHandlerIntegrationPermissionC1C8F46C": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "YearclockyApplicationApiHandler023CBB80",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:eu-central-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "SharedHttpApi30B2265F"
+       },
+       "/*/*/tasks"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--tasks/ApiHandlerIntegration-Permission"
+   }
+  },
+  "SharedHttpApiANYtasks7AE888FF": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "SharedHttpApi30B2265F"
+    },
+    "AuthorizationType": "NONE",
+    "RouteKey": "ANY /tasks",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "SharedHttpApiANYtasksApiHandlerIntegrationF4F9B4C6"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--tasks/Resource"
+   }
+  },
+  "SharedHttpApiANYtasksproxyApiHandlerIntegrationPermissionF2F9EB98": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "YearclockyApplicationApiHandler023CBB80",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:eu-central-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "SharedHttpApi30B2265F"
+       },
+       "/*/*/tasks/{proxy+}"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--tasks--{proxy+}/ApiHandlerIntegration-Permission"
+   }
+  },
+  "SharedHttpApiANYtasksproxy4FB79EC7": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "SharedHttpApi30B2265F"
+    },
+    "AuthorizationType": "NONE",
+    "RouteKey": "ANY /tasks/{proxy+}",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "SharedHttpApiANYtasksApiHandlerIntegrationF4F9B4C6"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--tasks--{proxy+}/Resource"
+   }
+  },
+  "SharedHttpApiANYyearclocksApiHandlerIntegrationPermissionA7D36E32": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "YearclockyApplicationApiHandler023CBB80",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:eu-central-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "SharedHttpApi30B2265F"
+       },
+       "/*/*/yearclocks"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--yearclocks/ApiHandlerIntegration-Permission"
+   }
+  },
+  "SharedHttpApiANYyearclocksB6DD5EBC": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "SharedHttpApi30B2265F"
+    },
+    "AuthorizationType": "NONE",
+    "RouteKey": "ANY /yearclocks",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "SharedHttpApiANYtasksApiHandlerIntegrationF4F9B4C6"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--yearclocks/Resource"
+   }
+  },
+  "SharedHttpApiANYyearclocksproxyApiHandlerIntegrationPermissionF46721C6": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "YearclockyApplicationApiHandler023CBB80",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:eu-central-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "SharedHttpApi30B2265F"
+       },
+       "/*/*/yearclocks/{proxy+}"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--yearclocks--{proxy+}/ApiHandlerIntegration-Permission"
+   }
+  },
+  "SharedHttpApiANYyearclocksproxy36BA20C7": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "SharedHttpApi30B2265F"
+    },
+    "AuthorizationType": "NONE",
+    "RouteKey": "ANY /yearclocks/{proxy+}",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "SharedHttpApiANYtasksApiHandlerIntegrationF4F9B4C6"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--yearclocks--{proxy+}/Resource"
+   }
+  },
+  "SharedHttpApiANYusersApiHandlerIntegrationPermission612BCBB8": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "YearclockyApplicationApiHandler023CBB80",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:eu-central-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "SharedHttpApi30B2265F"
+       },
+       "/*/*/users"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--users/ApiHandlerIntegration-Permission"
+   }
+  },
+  "SharedHttpApiANYusers530772A4": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "SharedHttpApi30B2265F"
+    },
+    "AuthorizationType": "NONE",
+    "RouteKey": "ANY /users",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "SharedHttpApiANYtasksApiHandlerIntegrationF4F9B4C6"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--users/Resource"
+   }
+  },
+  "SharedHttpApiANYusersproxyApiHandlerIntegrationPermission009C1B6A": {
+   "Type": "AWS::Lambda::Permission",
+   "Properties": {
+    "Action": "lambda:InvokeFunction",
+    "FunctionName": {
+     "Fn::GetAtt": [
+      "YearclockyApplicationApiHandler023CBB80",
+      "Arn"
+     ]
+    },
+    "Principal": "apigateway.amazonaws.com",
+    "SourceArn": {
+     "Fn::Join": [
+      "",
+      [
+       "arn:",
+       {
+        "Ref": "AWS::Partition"
+       },
+       ":execute-api:eu-central-1:",
+       {
+        "Ref": "AWS::AccountId"
+       },
+       ":",
+       {
+        "Ref": "SharedHttpApi30B2265F"
+       },
+       "/*/*/users/{proxy+}"
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--users--{proxy+}/ApiHandlerIntegration-Permission"
+   }
+  },
+  "SharedHttpApiANYusersproxyEEA5633E": {
+   "Type": "AWS::ApiGatewayV2::Route",
+   "Properties": {
+    "ApiId": {
+     "Ref": "SharedHttpApi30B2265F"
+    },
+    "AuthorizationType": "NONE",
+    "RouteKey": "ANY /users/{proxy+}",
+    "Target": {
+     "Fn::Join": [
+      "",
+      [
+       "integrations/",
+       {
+        "Ref": "SharedHttpApiANYtasksApiHandlerIntegrationF4F9B4C6"
+       }
+      ]
+     ]
+    }
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/SharedHttpApi/ANY--users--{proxy+}/Resource"
+   }
+  },
+  "YearclockyTable7F62CB98": {
+   "Type": "AWS::DynamoDB::Table",
+   "Properties": {
+    "AttributeDefinitions": [
+     {
+      "AttributeName": "pk",
+      "AttributeType": "S"
+     },
+     {
+      "AttributeName": "sk",
+      "AttributeType": "S"
+     }
+    ],
+    "BillingMode": "PAY_PER_REQUEST",
+    "KeySchema": [
+     {
+      "AttributeName": "pk",
+      "KeyType": "HASH"
+     },
+     {
+      "AttributeName": "sk",
+      "KeyType": "RANGE"
+     }
+    ]
+   },
+   "UpdateReplacePolicy": "Retain",
+   "DeletionPolicy": "Retain",
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/YearclockyTable/Resource"
+   }
+  },
+  "YearclockyApplicationApiHandlerServiceRole28A57883": {
+   "Type": "AWS::IAM::Role",
+   "Properties": {
+    "AssumeRolePolicyDocument": {
+     "Statement": [
+      {
+       "Action": "sts:AssumeRole",
+       "Effect": "Allow",
+       "Principal": {
+        "Service": "lambda.amazonaws.com"
+       }
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "ManagedPolicyArns": [
+     {
+      "Fn::Join": [
+       "",
+       [
+        "arn:",
+        {
+         "Ref": "AWS::Partition"
+        },
+        ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+       ]
+      ]
+     }
+    ],
+    "Tags": [
+     {
+      "Key": "Application",
+      "Value": "yearclocky"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "aws-cdk"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/YearclockyApplication/ApiHandler/ServiceRole/Resource"
+   }
+  },
+  "YearclockyApplicationApiHandlerServiceRoleDefaultPolicyE8BA1710": {
+   "Type": "AWS::IAM::Policy",
+   "Properties": {
+    "PolicyDocument": {
+     "Statement": [
+      {
+       "Action": [
+        "dynamodb:BatchGetItem",
+        "dynamodb:Query",
+        "dynamodb:GetItem",
+        "dynamodb:Scan",
+        "dynamodb:ConditionCheckItem",
+        "dynamodb:BatchWriteItem",
+        "dynamodb:PutItem",
+        "dynamodb:UpdateItem",
+        "dynamodb:DeleteItem",
+        "dynamodb:DescribeTable"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "YearclockyTable7F62CB98",
+          "Arn"
+         ]
+        }
+       ]
+      },
+      {
+       "Action": [
+        "dynamodb:GetRecords",
+        "dynamodb:GetShardIterator"
+       ],
+       "Effect": "Allow",
+       "Resource": [
+        {
+         "Fn::GetAtt": [
+          "YearclockyTable7F62CB98",
+          "Arn"
+         ]
+        }
+       ]
+      }
+     ],
+     "Version": "2012-10-17"
+    },
+    "PolicyName": "YearclockyApplicationApiHandlerServiceRoleDefaultPolicyE8BA1710",
+    "Roles": [
+     {
+      "Ref": "YearclockyApplicationApiHandlerServiceRole28A57883"
+     }
+    ]
+   },
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/YearclockyApplication/ApiHandler/ServiceRole/DefaultPolicy/Resource"
+   }
+  },
+  "YearclockyApplicationApiHandler023CBB80": {
+   "Type": "AWS::Lambda::Function",
+   "Properties": {
+    "Architectures": [
+     "arm64"
+    ],
+    "Code": {
+     "S3Bucket": {
+      "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-central-1"
+     },
+     "S3Key": "21d93724328849736211fd0de6b08a537a26a08fe816faaed7649b8328ec475b.zip"
+    },
+    "Environment": {
+     "Variables": {
+      "TABLE_NAME": {
+       "Ref": "YearclockyTable7F62CB98"
+      }
+     }
+    },
+    "FunctionName": "api-handler",
+    "Handler": "index.handler",
+    "MemorySize": 256,
+    "Role": {
+     "Fn::GetAtt": [
+      "YearclockyApplicationApiHandlerServiceRole28A57883",
+      "Arn"
+     ]
+    },
+    "Runtime": "nodejs20.x",
+    "Tags": [
+     {
+      "Key": "Application",
+      "Value": "yearclocky"
+     },
+     {
+      "Key": "ManagedBy",
+      "Value": "aws-cdk"
+     }
+    ],
+    "Timeout": 10
+   },
+   "DependsOn": [
+    "YearclockyApplicationApiHandlerServiceRoleDefaultPolicyE8BA1710",
+    "YearclockyApplicationApiHandlerServiceRole28A57883"
+   ],
+   "Metadata": {
+    "aws:cdk:path": "YearclockyApplicationStack/YearclockyApplication/ApiHandler/Resource",
+    "aws:asset:path": "asset.21d93724328849736211fd0de6b08a537a26a08fe816faaed7649b8328ec475b",
+    "aws:asset:is-bundled": true,
+    "aws:asset:property": "Code"
+   }
+  },
   "CDKMetadata": {
    "Type": "AWS::CDK::Metadata",
    "Properties": {
-    "Analytics": "v2:deflate64:H4sIAAAAAAAA/zPSMzIx1TNQTCwv1k1OydbNyUzSqw4uSUzO1nFOy/MvLSkoLanVyctPSdXLKtYvMzLRMzTRM1TMKs7M1C0qzSvJzE3VC4LQAPQagAtLAAAA"
+    "Analytics": "v2:deflate64:H4sIAAAAAAAA/12PzW6DQAyEnyX3xW0IeYAkUpVeqojkjsyyQeZnF2EThFa8e7VLc+npm7FnZDmFNDvC5w5nTnTVJh2V4O+CulU4c+FxoBrFzLi8UvBXkeE0kLo8bUCwd8HahMEmwih3k2zq24qpRxRyNkT+2ZhbVYd9WSH4y9PezNgT89/+a7I6ZFdVLRZ7V5XgH1h28VwU73JhXWUahp+Id08R9uBztxUib64jvQS7qVXxoUBmIwynAMUHOE+6NXJGNqvKDbtp1EbFbfiRbL2qcA8a/nilGewz2O8aJkrGyQr1BvKNv+2ta5VcAQAA"
    },
    "Metadata": {
     "aws:cdk:path": "YearclockyApplicationStack/CDKMetadata/Default"
