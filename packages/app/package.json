@@ -1,6 +1,6 @@
 {
   "name": "yearclocky-application",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "Basic Node.js application scaffolded with TypeScript.",
   "main": "dist/index.js",
