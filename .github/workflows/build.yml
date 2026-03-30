@@ -53,11 +53,11 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Bump package version
-        run: make set-app-version VERSION=${{ steps.version.outputs.value }}
+        run: make set-package-version VERSION=${{ steps.version.outputs.value }}
 
       - name: Commit and tag release
         run: |
-          git add packages/app/package.json package-lock.json
+          git add cdk/package.json package-lock.json
           git commit -m "chore(release): ${{ steps.version.outputs.value }}"
           git tag "${{ steps.version.outputs.value }}"
 
@@ -79,7 +79,7 @@ jobs:
           cache: npm
 
       - name: Verify tag matches package version
-        run: make verify-app-version VERSION=${GITHUB_REF_NAME}
+        run: make verify-package-version VERSION=${GITHUB_REF_NAME}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -88,4 +88,4 @@ jobs:
           role-to-assume: arn:aws:iam::533115990704:role/yearclocky-application-publish-role
 
       - name: Publish package
-        run: make ci-publish-app
+        run: make ci-publish-package

@@ -1,5 +1,6 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
+import { fileURLToPath } from "node:url";
 
 import { Duration, Tags } from "aws-cdk-lib";
 import * as apigwv2 from "aws-cdk-lib/aws-apigatewayv2";
@@ -9,6 +10,7 @@ import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as nodejs from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
 
+const moduleDirectory = path.dirname(fileURLToPath(import.meta.url));
 const apiHandlerEntry = resolveApiHandlerEntry();
 
 export type YearclockyApplicationProps = {
@@ -70,8 +72,8 @@ export class YearclockyApplication extends Construct {
 
 function resolveApiHandlerEntry(): string {
   const candidates = [
-    path.resolve(process.cwd(), "packages/app/src/index.ts"),
-    path.resolve(process.cwd(), "../packages/app/src/index.ts"),
+    path.resolve(moduleDirectory, "../lambda/index.ts"),
+    path.resolve(moduleDirectory, "../lambda/index.js"),
   ];
 
   for (const candidate of candidates) {
@@ -80,5 +82,5 @@ function resolveApiHandlerEntry(): string {
     }
   }
 
-  throw new Error("Unable to resolve packages/app/src/index.ts for api-handler.");
+  throw new Error("Unable to resolve the packaged api-handler entrypoint.");
 }

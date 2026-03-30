@@ -1,8 +1,22 @@
 {
   "name": "yearclocky-cdk",
   "version": "1.0.0",
-  "private": true,
-  "description": "AWS CDK configuration for the Yearclocky application.",
+  "private": false,
+  "type": "module",
+  "description": "Reusable AWS CDK construct for the Yearclocky application.",
+  "main": "dist/lib/index.js",
+  "types": "dist/lib/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/lib/index.d.ts",
+      "default": "./dist/lib/index.js"
+    }
+  },
+  "files": [
+    "dist/**/*",
+    "lambda/**/*",
+    "lib/**/*"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "cdk": "cdk",
@@ -13,13 +27,19 @@
   "engines": {
     "node": ">=20"
   },
-  "dependencies": {
+  "peerDependencies": {
     "aws-cdk-lib": "^2.190.0",
     "constructs": "^10.4.2"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.1019.0",
+    "@aws-sdk/lib-dynamodb": "^3.1019.0"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",
     "aws-cdk": "^2.190.0",
+    "aws-cdk-lib": "^2.190.0",
+    "constructs": "^10.4.2",
     "tsx": "^4.19.0",
     "typescript": "^5.8.0"
   }

@@ -544,7 +544,7 @@
      "S3Bucket": {
       "Fn::Sub": "cdk-hnb659fds-assets-${AWS::AccountId}-eu-central-1"
      },
-     "S3Key": "21d93724328849736211fd0de6b08a537a26a08fe816faaed7649b8328ec475b.zip"
+     "S3Key": "8cdc1d6bce2db239efbe9d356296b2fad6573ebf77adcbd69cd82c50883e854d.zip"
     },
     "Environment": {
      "Variables": {
@@ -581,7 +581,7 @@
    ],
    "Metadata": {
     "aws:cdk:path": "YearclockyApplicationStack/YearclockyApplication/ApiHandler/Resource",
-    "aws:asset:path": "asset.21d93724328849736211fd0de6b08a537a26a08fe816faaed7649b8328ec475b",
+    "aws:asset:path": "asset.8cdc1d6bce2db239efbe9d356296b2fad6573ebf77adcbd69cd82c50883e854d",
     "aws:asset:is-bundled": true,
     "aws:asset:property": "Code"
    }

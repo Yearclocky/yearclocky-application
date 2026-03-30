@@ -2,10 +2,10 @@ AWS_REGION ?= eu-central-1
 AWS_ACCOUNT_ID ?= 533115990704
 CODEARTIFACT_DOMAIN ?= yearclocky
 CODEARTIFACT_REPOSITORY ?= github
-PACKAGE_WORKSPACE ?= yearclocky-application
+PACKAGE_WORKSPACE ?= yearclocky-cdk
 VERSION ?=
 
-.PHONY: ci-install build-app build-cdk build codeartifact-login publish-app ci-publish-app next-release-version set-app-version verify-app-version
+.PHONY: ci-install build-app build-cdk build codeartifact-login publish-package ci-publish-package next-release-version set-package-version verify-package-version
 
 ci-install:
 	npm ci
@@ -21,10 +21,10 @@ build: build-app build-cdk
 codeartifact-login:
 	aws codeartifact login --tool npm --domain $(CODEARTIFACT_DOMAIN) --domain-owner $(AWS_ACCOUNT_ID) --repository $(CODEARTIFACT_REPOSITORY) --region $(AWS_REGION)
 
-publish-app:
+publish-package:
 	npm publish --workspace $(PACKAGE_WORKSPACE)
 
-ci-publish-app: ci-install build-app codeartifact-login publish-app
+ci-publish-package: ci-install build-cdk codeartifact-login publish-package
 
 next-release-version:
 	@latest_tag=$$(git tag --list '*.*.*' --sort=-v:refname | head -n 1); \
@@ -37,10 +37,10 @@ EOF \
 		echo "$$major.$$((minor + 1)).0"; \
 	fi
 
-set-app-version:
+set-package-version:
 	test -n "$(VERSION)"
 	npm version $(VERSION) --workspace $(PACKAGE_WORKSPACE) --no-git-tag-version
 
-verify-app-version:
+verify-package-version:
 	test -n "$(VERSION)"
-	test "$$(node -p "require('./packages/app/package.json').version")" = "$(VERSION)"
+	test "$$(node -p "require('./cdk/package.json').version")" = "$(VERSION)"
