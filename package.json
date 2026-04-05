@@ -9,8 +9,8 @@
   ],
   "scripts": {
     "build": "npm run build --workspace yearclocky-application",
-    "cdk": "npm run cdk --workspace yearclocky-cdk",
-    "cdk:synth": "npm run synth --workspace yearclocky-cdk",
+    "cdk": "npm run cdk --workspace yearclocky",
+    "cdk:synth": "npm run synth --workspace yearclocky",
     "clean": "npm run clean --workspace yearclocky-application",
     "dev": "npm run dev --workspace yearclocky-application",
     "start": "npm run start --workspace yearclocky-application"

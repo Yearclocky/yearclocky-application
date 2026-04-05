@@ -2,7 +2,7 @@ AWS_REGION ?= eu-central-1
 AWS_ACCOUNT_ID ?= 533115990704
 CODEARTIFACT_DOMAIN ?= yearclocky
 CODEARTIFACT_REPOSITORY ?= github
-PACKAGE_WORKSPACE ?= yearclocky-cdk
+PACKAGE_WORKSPACE ?= yearclocky
 VERSION ?=
 
 .PHONY: ci-install build-app build-cdk build codeartifact-login publish-package ci-publish-package next-release-version set-package-version verify-package-version
@@ -11,10 +11,10 @@ ci-install:
 	npm ci
 
 build-app:
-	npm run build --workspace $(PACKAGE_WORKSPACE)
+	npm run build --workspace yearclocky-application
 
 build-cdk:
-	npm run build --workspace yearclocky-cdk
+	npm run build --workspace yearclocky
 
 build: build-app build-cdk
 
