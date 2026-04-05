@@ -1,6 +1,6 @@
 {
   "name": "yearclocky-cdk",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "type": "module",
   "description": "Reusable AWS CDK construct for the Yearclocky application.",
