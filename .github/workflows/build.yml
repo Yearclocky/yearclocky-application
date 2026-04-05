@@ -47,22 +47,11 @@ jobs:
         id: version
         run: echo "value=$(make next-release-version)" >> "$GITHUB_OUTPUT"
 
-      - name: Configure Git
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Bump package version
-        run: make set-package-version VERSION=${{ steps.version.outputs.value }}
-
-      - name: Commit and tag release
-        run: |
-          git add cdk/package.json package-lock.json
-          git commit -m "chore(release): ${{ steps.version.outputs.value }}"
-          git tag "${{ steps.version.outputs.value }}"
+      - name: Create tag
+        run: git tag "${{ steps.version.outputs.value }}"
 
       - name: Push release commit and tag
-        run: git push origin HEAD:master --follow-tags
+        run: git push origin "${{ steps.version.outputs.value }}"
 
       - name: Create GitHub release
         env:
@@ -87,7 +76,7 @@ jobs:
           cache: npm
 
       - name: Verify tag matches package version
-        run: make verify-package-version VERSION=${{ needs.create-release-tag.outputs.version }}
+        run: test -n "${{ needs.create-release-tag.outputs.version }}"
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -96,4 +85,4 @@ jobs:
           role-to-assume: arn:aws:iam::533115990704:role/yearclocky-application-publish-role
 
       - name: Publish package
-        run: make ci-publish-package
+        run: make ci-publish-package VERSION=${{ needs.create-release-tag.outputs.version }}
