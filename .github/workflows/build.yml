@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - master
-    tags:
-      - "*.*.*"
   workflow_dispatch:
 
 permissions:
@@ -21,6 +19,8 @@ env:
 jobs:
   create-release-tag:
     if: github.ref == 'refs/heads/master' && github.actor != 'github-actions[bot]'
+    outputs:
+      version: ${{ steps.version.outputs.value }}
     concurrency:
       group: release-master
       cancel-in-progress: false
@@ -35,7 +35,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Build
@@ -64,22 +64,30 @@ jobs:
       - name: Push release commit and tag
         run: git push origin HEAD:master --follow-tags
 
+      - name: Create GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "${{ steps.version.outputs.value }}" --generate-notes
+
   publish-package:
-    if: startsWith(github.ref, 'refs/tags/')
+    if: github.ref == 'refs/heads/master' && github.actor != 'github-actions[bot]'
+    needs: create-release-tag
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: refs/tags/${{ needs.create-release-tag.outputs.version }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
 
       - name: Verify tag matches package version
-        run: make verify-package-version VERSION=${GITHUB_REF_NAME}
+        run: make verify-package-version VERSION=${{ needs.create-release-tag.outputs.version }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
