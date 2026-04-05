@@ -35,6 +35,18 @@ const dataTable = new Table(stack, "YearclockyTable", {
   billingMode: BillingMode.PAY_PER_REQUEST,
 });
 
+dataTable.addGlobalSecondaryIndex({
+  indexName: "gsi1",
+  partitionKey: {
+    name: "gsi1pk",
+    type: AttributeType.STRING,
+  },
+  sortKey: {
+    name: "gsi1sk",
+    type: AttributeType.STRING,
+  },
+});
+
 new YearclockyApplication(stack, "YearclockyApplication", {
   httpApi,
   dataTable,

@@ -14,6 +14,8 @@ import {
   parseJsonBody,
   putUser,
   requireUser,
+  userHasMemberships,
+  userHasTaskCompletions,
   userHasTasks,
   userHasYearclocks,
   validateEmail,
@@ -22,12 +24,12 @@ import {
 
 type CreateUserInput = {
   email: string;
-  displayName: string;
+  name: string;
 };
 
 type UpdateUserInput = {
   email?: string;
-  displayName?: string;
+  name?: string;
 };
 
 export async function users(
@@ -69,13 +71,13 @@ export async function users(
 
 async function createUser(input: CreateUserInput): Promise<User> {
   validateRequiredString(input.email, "email");
-  validateRequiredString(input.displayName, "displayName");
+  validateRequiredString(input.name, "name");
   validateEmail(input.email);
 
   const user: User = {
     id: createId("usr"),
     email: input.email.trim().toLowerCase(),
-    displayName: input.displayName.trim(),
+    name: input.name.trim(),
     createdAt: nowIso(),
   };
 
@@ -92,9 +94,9 @@ async function updateUser(userId: string, input: UpdateUserInput): Promise<User>
     user.email = input.email.trim().toLowerCase();
   }
 
-  if (input.displayName !== undefined) {
-    validateRequiredString(input.displayName, "displayName");
-    user.displayName = input.displayName.trim();
+  if (input.name !== undefined) {
+    validateRequiredString(input.name, "name");
+    user.name = input.name.trim();
   }
 
   await putUser(user);
@@ -104,8 +106,7 @@ async function updateUser(userId: string, input: UpdateUserInput): Promise<User>
 async function deleteUser(userId: string): Promise<void> {
   await requireUser(userId);
 
-  const hasOwnedYearclocks = await userHasYearclocks(userId);
-  if (hasOwnedYearclocks) {
+  if (await userHasYearclocks(userId)) {
     throw new HttpError(
       409,
       "USER_HAS_YEARCLOCKS",
@@ -113,12 +114,27 @@ async function deleteUser(userId: string): Promise<void> {
     );
   }
 
-  const hasTasks = await userHasTasks(userId);
-  if (hasTasks) {
+  if (await userHasMemberships(userId)) {
+    throw new HttpError(
+      409,
+      "USER_HAS_MEMBERSHIPS",
+      "Delete the user's memberships before deleting the user.",
+    );
+  }
+
+  if (await userHasTasks(userId)) {
     throw new HttpError(
       409,
       "USER_HAS_TASKS",
       "Delete the user's tasks before deleting the user.",
+    );
+  }
+
+  if (await userHasTaskCompletions(userId)) {
+    throw new HttpError(
+      409,
+      "USER_HAS_TASK_COMPLETIONS",
+      "Delete the user's task completions before deleting the user.",
     );
   }
 

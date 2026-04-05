@@ -2,6 +2,7 @@ import {
   ApiResponse,
   HttpError,
   HttpMethod,
+  Membership,
   Yearclock,
   createId,
   created,
@@ -12,24 +13,25 @@ import {
   nowIso,
   ok,
   parseJsonBody,
+  putMembership,
   putYearclock,
   requireUser,
   requireYearclock,
   validateRequiredString,
-  validateYear,
+  yearclockHasCategories,
+  yearclockHasMemberships,
+  yearclockHasTaskCompletions,
   yearclockHasTasks,
 } from "../api.js";
 
 type CreateYearclockInput = {
-  title: string;
-  year: number;
-  ownerId: string;
+  name: string;
+  ownerUserId: string;
 };
 
 type UpdateYearclockInput = {
-  title?: string;
-  year?: number;
-  ownerId?: string;
+  name?: string;
+  ownerUserId?: string;
 };
 
 export async function yearclocks(
@@ -70,19 +72,27 @@ export async function yearclocks(
 }
 
 async function createYearclock(input: CreateYearclockInput): Promise<Yearclock> {
-  validateRequiredString(input.title, "title");
-  validateYear(input.year, "year");
-  await requireUser(validateRequiredString(input.ownerId, "ownerId"));
+  validateRequiredString(input.name, "name");
+  const ownerUserId = validateRequiredString(input.ownerUserId, "ownerUserId");
+  await requireUser(ownerUserId);
 
   const yearclock: Yearclock = {
     id: createId("ycl"),
-    title: input.title.trim(),
-    year: input.year,
-    ownerId: input.ownerId.trim(),
+    name: input.name.trim(),
+    ownerUserId,
     createdAt: nowIso(),
   };
 
   await putYearclock(yearclock);
+
+  const membership: Membership = {
+    userId: ownerUserId,
+    yearclockId: yearclock.id,
+    role: "owner",
+    joinedAt: yearclock.createdAt,
+  };
+
+  await putMembership(membership);
   return yearclock;
 }
 
@@ -92,19 +102,15 @@ async function updateYearclock(
 ): Promise<Yearclock> {
   const yearclock = await requireYearclock(yearclockId);
 
-  if (input.title !== undefined) {
-    validateRequiredString(input.title, "title");
-    yearclock.title = input.title.trim();
+  if (input.name !== undefined) {
+    validateRequiredString(input.name, "name");
+    yearclock.name = input.name.trim();
   }
 
-  if (input.year !== undefined) {
-    validateYear(input.year, "year");
-    yearclock.year = input.year;
-  }
-
-  if (input.ownerId !== undefined) {
-    await requireUser(validateRequiredString(input.ownerId, "ownerId"));
-    yearclock.ownerId = input.ownerId.trim();
+  if (input.ownerUserId !== undefined) {
+    const ownerUserId = validateRequiredString(input.ownerUserId, "ownerUserId");
+    await requireUser(ownerUserId);
+    yearclock.ownerUserId = ownerUserId;
   }
 
   await putYearclock(yearclock);
@@ -114,12 +120,35 @@ async function updateYearclock(
 async function deleteYearclock(yearclockId: string): Promise<void> {
   await requireYearclock(yearclockId);
 
-  const hasTasks = await yearclockHasTasks(yearclockId);
-  if (hasTasks) {
+  if (await yearclockHasTasks(yearclockId)) {
     throw new HttpError(
       409,
       "YEARCLOCK_HAS_TASKS",
       "Delete the yearclock's tasks before deleting the yearclock.",
+    );
+  }
+
+  if (await yearclockHasCategories(yearclockId)) {
+    throw new HttpError(
+      409,
+      "YEARCLOCK_HAS_CATEGORIES",
+      "Delete the yearclock's categories before deleting the yearclock.",
+    );
+  }
+
+  if (await yearclockHasMemberships(yearclockId)) {
+    throw new HttpError(
+      409,
+      "YEARCLOCK_HAS_MEMBERSHIPS",
+      "Delete the yearclock's memberships before deleting the yearclock.",
+    );
+  }
+
+  if (await yearclockHasTaskCompletions(yearclockId)) {
+    throw new HttpError(
+      409,
+      "YEARCLOCK_HAS_TASK_COMPLETIONS",
+      "Delete the yearclock's task completions before deleting the yearclock.",
     );
   }
 

@@ -54,7 +54,14 @@ export class YearclockyApplication extends Construct {
       this.apiHandler,
     );
 
-    for (const route of ["/tasks", "/yearclocks", "/users"]) {
+    for (const route of [
+      "/categories",
+      "/memberships",
+      "/task-completions",
+      "/tasks",
+      "/yearclocks",
+      "/users",
+    ]) {
       this.httpApi.addRoutes({
         path: route,
         methods: [apigwv2.HttpMethod.ANY],
