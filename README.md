@@ -33,5 +33,5 @@ tasks separated per category.
 ### Scripts
 
 - `npm run build` compiles the application package.
-- `npm run build --workspace yearclocky-application` compiles the CDK package.
+- `npm run build --workspace yearclocky-cdk` compiles the CDK package.
 - `npm run cdk:synth` synthesizes the infrastructure template.
