@@ -47,6 +47,9 @@ jobs:
         id: version
         run: echo "value=$(make next-release-version)" >> "$GITHUB_OUTPUT"
 
+      - name: Verify release version
+        run: test -n "${{ steps.version.outputs.value }}"
+
       - name: Create tag
         run: git tag "${{ steps.version.outputs.value }}"
 

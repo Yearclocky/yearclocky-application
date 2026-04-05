@@ -40,9 +40,9 @@ next-release-version:
 	if [ -z "$$latest_tag" ]; then \
 		echo 0.1.0; \
 	else \
-		IFS=. read -r major minor patch <<EOF; \
-$$latest_tag \
-EOF \
+		major=$${latest_tag%%.*}; \
+		rest=$${latest_tag#*.}; \
+		minor=$${rest%%.*}; \
 		echo "$$major.$$((minor + 1)).0"; \
 	fi
 
