@@ -1,5 +1,5 @@
 {
-  "app": "node --import tsx bin/yearclocky-cdk.ts",
+  "app": "node --import tsx bin/app.ts",
   "context": {
     "@aws-cdk/aws-lambda:recognizeLayerVersion": true,
     "@aws-cdk/core:newStyleStackSynthesis": true
